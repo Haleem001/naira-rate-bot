@@ -16,9 +16,11 @@ TOKEN = os.getenv('BOTAPITOKEN')
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
+url=os.getenv('APIURL')
+
 
 response = requests.get(
-    'https://api.binance.com/api/v3/ticker/24hr?symbol=USDTNGN')
+    url)
 data = response.text
 parse_json = json.loads(data)
 rate = parse_json['lastPrice']
