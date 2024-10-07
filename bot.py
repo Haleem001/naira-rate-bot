@@ -23,8 +23,9 @@ response = requests.get(
     url)
 data = response.text
 parse_json = json.loads(data)
-rate = parse_json['lastPrice']
+rate = parse_json[0]['price']
 float_rate = float(rate)
+print(rate)
 
 
 def help(update, context):
