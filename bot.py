@@ -69,18 +69,17 @@ def ngnusd(update, context):
     real = float(real)
     convert = real/float_rate
 
-    update.message.reply_text('₦{} is ${:.3f}' .format(real, convert))
-
+    update.message.reply_text('₦{:,.2f} is ${:,.3f}'.format(real, convert))
 
 def usdngn(update, context):
-
     real = update.message.text.replace('/usdngn', '')
     real = real.replace(',', '.')
 
     real = float(real)
     convert = real*float_rate
 
-    update.message.reply_text('${} is ₦{:.2f}' .format(real, convert))
+    update.message.reply_text('${:,.2f} is ₦{:,.2f}'.format(real, convert))
+
 
 
 def get_dispatcher(bot):
