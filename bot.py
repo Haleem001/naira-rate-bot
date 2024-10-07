@@ -36,7 +36,7 @@ def help(update, context):
         '\n' +
         '/usd - Get current Dollar (USD) rate\n' +
         '/ngnusd - Convert Naira (NGN) to Dollar (USD). Example /ngnusd 1000  \n ' +
-        '/usdngn - Convert Dollar (USD) to Naira (NGN). Example /usdngn 10 \n' +
+        '/usdngn - Convert Dollar (USD) to Naira (NGN). Example /usdngn 100 \n' +
         'For enquiries contact @HaleemG\n'
     )
 
