@@ -13,8 +13,9 @@ load_dotenv()
 
 PORT = int(os.environ.get('PORT', 443))
 TOKEN = os.getenv('BOTAPITOKEN')
-updater = Updater(token=TOKEN, use_context=True)
-dispatcher = updater.dispatcher
+def create_updater():
+    return Updater(token=TOKEN, use_context=True)
+
 
 url=os.getenv('APIURL')
 
@@ -104,13 +105,15 @@ def usdngn(update, context):
 
 def get_dispatcher(bot):
     """Create and return dispatcher instances"""
-    dispatcher = Dispatcher(bot, None, workers=0)
+    updater = create_updater()
+    dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler('help', help))
     dispatcher.add_handler(CommandHandler("usd", get_usd))
     dispatcher.add_handler(CommandHandler('ngnusd', ngnusd))
     dispatcher.add_handler(CommandHandler('usdngn', usdngn))
     return dispatcher
+
 
 
 # updater.start_polling()
