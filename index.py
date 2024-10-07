@@ -14,7 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 api = Blueprint("serverless_handler", __name__)
-bot = Bot(os.environ["BOTAPITOKEN"])
+bot = Bot(os.getenv("BOTAPITOKEN"))
 app.config["tg_bot"] = bot
 app.config["tg_dispatcher"] = get_dispatcher(bot)
 logger = logging.getLogger(__name__)
