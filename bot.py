@@ -1,6 +1,7 @@
 
 import pytz
-from datetime import datetime
+import datetime
+
 import json
 from telegram.ext import CommandHandler, Updater, Dispatcher
 import os
@@ -13,6 +14,7 @@ load_dotenv()
 
 PORT = int(os.environ.get('PORT', 443))
 TOKEN = os.getenv('BOTAPITOKEN')
+
 def create_updater():
     return Updater(token=TOKEN, use_context=True)
 
@@ -42,21 +44,6 @@ def help(update, context):
     )
 
 
-def get_rate_new():
-
-    # pe
-    symbol = parse_json['symbol']
-    hr_high = parse_json["highPrice"]
-    hr_low = parse_json["lowPrice"]
-    float_hr_h = float(hr_high)
-    float_hr_low = float(hr_low)
-    tz_NG = pytz.timezone('Africa/Lagos')
-    now = datetime.now(tz_NG)
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    cleaner_rate = "USD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(
-        symbol, float_rate, float_hr_h, float_hr_low) + "\n At {}" .format(dt_string)
-    # clean_rate = '$1  is ₦{:.2f} as at {}.'.format(float_rate, dt_string)
-    return cleaner_rate
 
 
 def start(update, context):
@@ -66,21 +53,22 @@ def start(update, context):
     )
 
 
-def get_usd(update, context):
+# def get_usd(update, context):
+#     context.bot.send_message(
+#         chat_id=update.effective_chat.id, text=get_rate_new())
+def get_usd2(update, context):
+    average_value = float_rate
+    nigeria_time = pytz.timezone('Africa/Lagos')
+    dt = datetime.datetime.now( nigeria_time)
+    dt_string = dt.strftime("%A, %d-%m-%Y  • %H:%M:%S")
+    note = '\U0001f4b5'
+    cleaned_rate = '{}\n\t\t\t\t\t\t\t USD-NGN \n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string, note, average_value)
     context.bot.send_message(
-        chat_id=update.effective_chat.id, text=get_rate_new())
-
+        chat_id=update.effective_chat.id, text=cleaned_rate )
 
 def ngnusd(update, context):
-    # response = requests.get(
-    #     'https://api.binance.com/api/v3/ticker/24hr?symbol=USDTNGN')
-    # data = response.text
-    # parse_json = json.loads(data)
-    # rate = parse_json['lastPrice']
-    # float_rate = float(rate)
     real = update.message.text.replace('/ngnusd', '')
     real = real.replace(',', '.')
-
     real = float(real)
     convert = real/float_rate
 
@@ -88,12 +76,7 @@ def ngnusd(update, context):
 
 
 def usdngn(update, context):
-    # response = requests.get(
-    #     'https://api.binance.com/api/v3/ticker/24hr?symbol=USDTNGN')
-    # data = response.text
-    # parse_json = json.loads(data)
-    # rate = parse_json['lastPrice']
-    # float_rate = float(rate)
+
     real = update.message.text.replace('/usdngn', '')
     real = real.replace(',', '.')
 
@@ -101,7 +84,8 @@ def usdngn(update, context):
     convert = real*float_rate
 
     update.message.reply_text('${} is ₦{:.2f}' .format(real, convert))
-
+updater = create_updater()
+dispatcher = updater.dispatcher
 
 def get_dispatcher(bot):
     """Create and return dispatcher instances"""
@@ -109,12 +93,16 @@ def get_dispatcher(bot):
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler('help', help))
-    dispatcher.add_handler(CommandHandler("usd", get_usd))
+    dispatcher.add_handler(CommandHandler("usd", get_usd2))
     dispatcher.add_handler(CommandHandler('ngnusd', ngnusd))
     dispatcher.add_handler(CommandHandler('usdngn', usdngn))
     return dispatcher
 
-
+# dispatcher.add_handler(CommandHandler("start", start))
+# dispatcher.add_handler(CommandHandler('help', help))
+# dispatcher.add_handler(CommandHandler("usd", get_usd2)) 
+# dispatcher.add_handler(CommandHandler('ngnusd' , ngnusd))
+# dispatcher.add_handler(CommandHandler('usdngn', usdngn))
 
 # updater.start_polling()
 # updater.idle()
