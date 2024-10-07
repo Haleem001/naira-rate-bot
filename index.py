@@ -9,9 +9,6 @@ from bot import get_dispatcher
 load_dotenv()
 
 
-
-
-
 app = Flask(__name__)
 api = Blueprint("serverless_handler", __name__)
 bot = Bot(os.getenv("BOTAPITOKEN"))
