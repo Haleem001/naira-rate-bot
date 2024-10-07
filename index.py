@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 def webhook():
     update_json = request.get_json()
     logger.info("input to function %s", update_json)
-    update = Update.de_json(update_json, app.config["tg_bot"])
-    app.config["tg_dispatcher"].process_update(update)
+    update = Update.de_json(update_json, bot)
+    get_dispatcher(bot).process_update(update)
     return jsonify({"status": "ok"})
 
 
@@ -37,4 +37,5 @@ def home():
 app.register_blueprint(api, url_prefix="/api/webhook")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
