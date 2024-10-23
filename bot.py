@@ -19,13 +19,7 @@ TOKEN = os.getenv('BOTAPITOKEN')
 url=os.getenv('APIURL')
 
 
-response = requests.get(
-    url)
-data = response.text
-parse_json = json.loads(data)
-rate = parse_json[0]['price']
-float_rate = float(rate)
-print(rate)
+
 
 
 def help(update, context):
@@ -54,6 +48,12 @@ def start(update, context):
 #     context.bot.send_message(
 #         chat_id=update.effective_chat.id, text=get_rate_new())
 def get_usd2(update, context):
+    response = requests.get(
+    url)
+    data = response.text
+    parse_json = json.loads(data)
+    rate = parse_json[0]['price']
+    float_rate = float(rate)
     average_value = float_rate
     nigeria_time = pytz.timezone('Africa/Lagos')
     dt = datetime.datetime.now( nigeria_time)
@@ -64,6 +64,12 @@ def get_usd2(update, context):
         chat_id=update.effective_chat.id, text=cleaned_rate )
 
 def ngnusd(update, context):
+    response = requests.get(
+    url)
+    data = response.text
+    parse_json = json.loads(data)
+    rate = parse_json[0]['price']
+    float_rate = float(rate)
     real = update.message.text.replace('/ngnusd', '')
     real = real.replace(',', '.')
     real = float(real)
@@ -72,6 +78,12 @@ def ngnusd(update, context):
     update.message.reply_text('₦{:,.2f} is ${:,.3f}'.format(real, convert))
 
 def usdngn(update, context):
+    response = requests.get(
+    url)
+    data = response.text
+    parse_json = json.loads(data)
+    rate = parse_json[0]['price']
+    float_rate = float(rate)
     real = update.message.text.replace('/usdngn', '')
     real = real.replace(',', '.')
 
